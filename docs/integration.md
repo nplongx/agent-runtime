@@ -15,7 +15,7 @@ The host must:
 ## Compose the runtime
 
 ~~~js
-import { createAgentSessionRuntime, createAgentSessionWorkflowPort } from '@runalith/agent-runtime';
+import { createAgentSessionRuntime, createAgentSessionWorkflowPort, createAgentSessionDeliveryPort } from '@runalith/agent-runtime';
 
 const workflowPort = createAgentSessionWorkflowPort({
   assertSharedConnection: database => database === workflowStore.db,
@@ -28,7 +28,14 @@ const workflowPort = createAgentSessionWorkflowPort({
   listTasksWithOpenClawSession: () => workflowStore.listTasksWithOpenClawSession(),
 });
 
-const runtime = createAgentSessionRuntime({ database: workflowStore.db, workflowPort });
+const deliveryHooks = createAgentSessionDeliveryPort({
+  ackSessionMessage: (...args) => workflowStore.ackSessionMessage(...args),
+  markSessionMessageDeliveryUncertain: (...args) => workflowStore.markSessionMessageDeliveryUncertain(...args),
+  retrySessionMessage: (...args) => workflowStore.retrySessionMessage(...args),
+  recordSessionDeliveryReceipt: (...args) => workflowStore.recordSessionDeliveryReceipt(...args),
+});
+
+const runtime = createAgentSessionRuntime({ database: workflowStore.db, workflowPort, deliveryHooks });
 const { api, lifecycleParticipant } = runtime;
 ~~~
 
@@ -48,6 +55,20 @@ Each supplied method must be a function. Runtime wraps it in a frozen, versioned
 | listTasksWithOpenClawSession() | Read task rows with existing openclaw_session_key for legacy registry backfill. |
 
 recordEvent must participate in the same connection/transaction context as Agent Runtime changes. Deterministic event IDs follow host Workflow event contract. Do not append a separate Agent-only event journal.
+
+
+## Delivery Port v1
+
+Agent Runtime optionally accepts a frozen Delivery Port v1 with exactly four methods:
+
+- `ackSessionMessage(messageId, options)`
+- `markSessionMessageDeliveryUncertain(messageId, options)`
+- `retrySessionMessage(messageId, options)`
+- `recordSessionDeliveryReceipt(messageId, receipt)`
+
+Create it with `createAgentSessionDeliveryPort()`. The host implementation may delegate to its existing `RunalithWorkflowStore` compatibility facade. This preserves fault injection and host observability during package migration. The calls must re-enter the same Agent Session domain API/store and exact Workflow SQLite connection; they must not open a second DB, own transaction control, or invoke network transport.
+
+When omitted, the runtime creates an internal Delivery Port that re-enters its own AgentSessionStore. Both modes use the same API and delivery state machine. The delivery port is a trusted in-process integration seam, not a caller-facing permission API.
 
 ## SQLite schema prerequisites
 

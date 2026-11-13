@@ -18,7 +18,7 @@ This is a host-composed persistence/runtime component, not an agent scheduler, i
 - Single-owner message claims using SQLite writer reservation and compare-and-set attempt/lease updates.
 - Durable transport-start intent, correlated success receipts, ACK validation, and restart recovery.
 - Explicit DELIVERY_UNCERTAIN quarantine after possible external side effect; ambiguous messages are not automatically replayed.
-- Separate public Agent Session API v1 and Workflow lifecycle participant v1.
+- Separate public Agent Session API v1, Workflow lifecycle participant v1, and optional host Delivery Port v1 that preserves compatibility/fault-injection hooks.
 
 ## Non-goals
 
@@ -47,6 +47,7 @@ Host supplies its existing Workflow database and a small adapter over authoritat
 import {
   createAgentSessionRuntime,
   createAgentSessionWorkflowPort,
+  createAgentSessionDeliveryPort,
 } from '@runalith/agent-runtime';
 
 const database = workflowDatabase; // exact connection already used by Workflow
@@ -64,8 +65,17 @@ const workflowPort = createAgentSessionWorkflowPort({
   listTasksWithOpenClawSession: () => workflowStore.listTasksWithOpenClawSession(),
 });
 
+// Optional: retain the host's current facade/fault-injection seam for
+// receipt, ACK, retry and uncertain-outcome transitions.
+const deliveryHooks = createAgentSessionDeliveryPort({
+  ackSessionMessage: (...args) => workflowStore.ackSessionMessage(...args),
+  markSessionMessageDeliveryUncertain: (...args) => workflowStore.markSessionMessageDeliveryUncertain(...args),
+  retrySessionMessage: (...args) => workflowStore.retrySessionMessage(...args),
+  recordSessionDeliveryReceipt: (...args) => workflowStore.recordSessionDeliveryReceipt(...args),
+});
+
 const { api: agentSessions, lifecycleParticipant } =
-  createAgentSessionRuntime({ database, workflowPort });
+  createAgentSessionRuntime({ database, workflowPort, deliveryHooks });
 
 const session = agentSessions.createAgentSession(taskId, {
   sessionKey: 'agent:architect:subagent:design',
@@ -128,7 +138,7 @@ A separate frozen participant exposes only:
 
 These hooks let Workflow include Agent Session changes in its own transactions. They are not part of the public Agent Session domain API.
 
-Runtime wires internal delivery callbacks back to the same AgentSessionStore. Host does not replace these callbacks or receive a raw store/database handle through public API.
+Without `deliveryHooks`, runtime wires the four callbacks back to the same internal AgentSessionStore. A host may instead supply frozen Delivery Port v1 to preserve existing compatibility facades, fault injection and observability. The four methods cannot expose raw database handles or transaction controls. This port is a trusted in-process integration seam, not external transport authority.
 
 ## Session access semantics
 

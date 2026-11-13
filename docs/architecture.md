@@ -56,7 +56,7 @@ Agent Runtime does not create or migrate jobs, tasks, or events.
 2. createAgentSessionRuntime() verifies that the port accepts the exact SQLite connection supplied by the host.
 3. Agent Runtime initializes its three owned tables and best-effort imports legacy session keys from host tasks.
 4. Session/ACL/queue row changes are enclosed in SQLite savepoints and paired with Workflow event appends/readback.
-5. The host provides a transport callback. Agent Runtime controls queue claim, attempt, lease, transport-start event, receipt, ACK and uncertainty semantics.
+5. The host provides a transport callback. Agent Runtime controls queue claim, attempt, lease, transport-start event, receipt, ACK and uncertainty semantics. The host may optionally inject Delivery Port v1 so package callbacks re-enter the existing host compatibility facade; the standalone default re-enters the same package store.
 6. Workflow invokes the separate lifecycle participant when task retries or terminalization must affect Agent Session state in the same connection/transaction.
 
 ## Transaction invariants
@@ -66,7 +66,7 @@ Agent Runtime does not create or migrate jobs, tasks, or events.
 - The runtime rejects mismatch before initializing Agent Session tables.
 - Agent Session row changes and Workflow event appends use that shared connection and local savepoints.
 - Workflow task/job/event data is accessed only through named port calls.
-- The public API and lifecycle participant are frozen and do not expose DB handles.
+- The public API, lifecycle participant, Workflow Port v1 and Delivery Port v1 are frozen and do not expose DB handles.
 - The host must not run provider/OpenClaw network operations inside a SQLite writer transaction.
 
 ## Delivery invariants

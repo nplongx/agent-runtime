@@ -3,7 +3,7 @@
 | Topic | Document |
 |---|---|
 | Responsibilities, module map, data flow and lifecycle invariants | [Architecture](architecture.md) |
-| Workflow port, database prerequisites, host integration and recovery | [Integration](integration.md) |
+| Workflow and Delivery ports, database prerequisites, host integration and recovery | [Integration](integration.md) |
 | Session, access, message, lease, receipt and outcome terms | [Terminology](terminology.md) |
 | Upstream snapshot, copied source, exclusions and pinned dependencies | [Source lineage](source-lineage.md) |
 | Security assumptions and host-owned authority | [Security policy](../SECURITY.md) |

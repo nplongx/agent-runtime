@@ -8,7 +8,9 @@ import {
 } from './agent-session-api.js';
 import {
   assertAgentSessionWorkflowPort,
-  createAgentSessionWorkflowPort
+  createAgentSessionWorkflowPort,
+  assertAgentSessionDeliveryPort,
+  createAgentSessionDeliveryPort
 } from './agent-session-ports.js';
 
 export const AGENT_SESSION_RUNTIME_VERSION = 1;
@@ -18,7 +20,7 @@ export const AGENT_SESSION_RUNTIME_VERSION = 1;
  * The database connection is supplied by the host and must be the same object
  * used by Workflow so row/event transitions remain atomic.
  */
-export function createAgentSessionRuntime({ database, workflowPort } = {}) {
+export function createAgentSessionRuntime({ database, workflowPort, deliveryHooks = null } = {}) {
   if (!database || typeof database.exec !== 'function' || typeof database.prepare !== 'function') {
     throw new TypeError('createAgentSessionRuntime requires a SQLite-compatible database connection');
   }
@@ -30,26 +32,26 @@ export function createAgentSessionRuntime({ database, workflowPort } = {}) {
     throw new TypeError('Agent Session Workflow Port must confirm the exact injected SQLite connection');
   }
 
-  // These callbacks preserve the existing host compatibility facade: delivery
-  // orchestration re-enters the same AgentSessionStore's durable receipt/ACK/
-  // uncertainty/retry operations. They are not external host authority.
+  // The host may inject its existing compatibility facade so delivery
+  // callbacks still traverse its fault-injection/observability seam. Without
+  // an adapter, keep the standalone behavior by re-entering this same store.
   let store;
-  const deliveryHooks = Object.freeze(Object.fromEntries(AGENT_SESSION_DELIVERY_HOOKS.map(method => [
-    method,
-    (...args) => {
-      if (!store) throw new Error(`Agent Session delivery hook used before store initialization: ${method}`);
-      return store[method](...args);
-    }
-  ])));
+  const hostDeliveryPort = deliveryHooks
+    ? (deliveryHooks.kind === 'agent-session-delivery-port' && deliveryHooks.version === 1 && Object.isFrozen(deliveryHooks)
+      ? assertAgentSessionDeliveryPort(deliveryHooks)
+      : createAgentSessionDeliveryPort(deliveryHooks))
+    : createAgentSessionDeliveryPort(Object.fromEntries(AGENT_SESSION_DELIVERY_HOOKS.map(method => [
+      method,
+      (...args) => {
+        if (!store) throw new Error(`Agent Session delivery hook used before store initialization: ${method}`);
+        return store[method](...args);
+      }
+    ])));
 
   store = new AgentSessionStore({
     database,
     workflowPort: hostWorkflowPort,
-    deliveryHooks: Object.freeze({
-      kind: 'agent-session-delivery-port',
-      version: 1,
-      ...deliveryHooks
-    })
+    deliveryHooks: hostDeliveryPort
   });
   const domainPort = createAgentSessionPort(store);
   const lifecycleParticipant = createAgentSessionLifecycleParticipant(store);

@@ -54,6 +54,8 @@ try {
     "assert.equal(api.AGENT_SESSION_RUNTIME_VERSION, 1);",
     "assert.equal(api.AGENT_SESSION_API_VERSION, 1);",
     "assert.equal(api.AGENT_SESSION_WORKFLOW_PORT_VERSION, 1);",
+    "assert.equal(api.AGENT_SESSION_DELIVERY_PORT_VERSION, 1);",
+    "assert.equal(typeof api.createAgentSessionDeliveryPort, 'function');",
     "assert.equal(typeof api.createAgentSessionRuntime, 'function');",
     "assert.equal(typeof api.createAgentSessionWorkflowPort, 'function');",
     "const root = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-runtime-consumer-smoke-'));",

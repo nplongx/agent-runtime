@@ -20,7 +20,12 @@ export {
   AGENT_SESSION_WORKFLOW_PORT_KIND,
   AGENT_SESSION_WORKFLOW_PORT_METHODS,
   createAgentSessionWorkflowPort,
-  assertAgentSessionWorkflowPort
+  assertAgentSessionWorkflowPort,
+  AGENT_SESSION_DELIVERY_PORT_VERSION,
+  AGENT_SESSION_DELIVERY_PORT_KIND,
+  AGENT_SESSION_DELIVERY_PORT_METHODS,
+  createAgentSessionDeliveryPort,
+  assertAgentSessionDeliveryPort
 } from './src/runtime/agent-session-ports.js';
 
 export {

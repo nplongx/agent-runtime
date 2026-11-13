@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "831d6eb649d4e55b3daf9608fd0d2bf8326fa4afada1f7409e14221f9e5df8ca",
-      "sizeBytes": 378
+      "sha256": "dd9d60fba1e1534ced0d2c763285d2859bc59a2bd07ba53457b9ed9cb692afd5",
+      "sizeBytes": 501
     },
     {
       "path": "LICENSE",
@@ -35,8 +35,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "8d0e98cf00d9617a7a1a1cb1550d921d4b0ff3ac8138ad913f9dfdc8a0f204e9",
-      "sizeBytes": 9929
+      "sha256": "91c5d263d4a0437579f2528f737241896322f6474a7ac4295c98bab6faf28e62",
+      "sizeBytes": 10837
     },
     {
       "path": "SECURITY.md",
@@ -45,18 +45,18 @@
     },
     {
       "path": "docs/README.md",
-      "sha256": "4f27ce7073d0d3d467d4045dd16bb5e21d6b893a79199c4e07a5d585a869d8fd",
-      "sizeBytes": 736
+      "sha256": "8c733921adf38fb216042e8086e5285c8e0ae6b2ef4b6d6d39c1a4487dce9b1c",
+      "sizeBytes": 750
     },
     {
       "path": "docs/architecture.md",
-      "sha256": "730bafc58527d9fb27ab84a20675bcde7d353eeeb92252512e2a05371dc1aa4b",
-      "sizeBytes": 5331
+      "sha256": "80cb1d2b17d9fdade3c0300c58341d23b33b10d95fb47cd327918333b2c96011",
+      "sizeBytes": 5542
     },
     {
       "path": "docs/integration.md",
-      "sha256": "82cbeb652f63214d45be8e3bdca2c0bb29b9f3eeda3d33a8a0312117f8037b15",
-      "sizeBytes": 5683
+      "sha256": "2c9cf4968a1eaa778316b5da13ed2568b41bb5aaeee2ff0005ecd984854df479",
+      "sizeBytes": 7139
     },
     {
       "path": "docs/source-lineage.md",
@@ -70,8 +70,8 @@
     },
     {
       "path": "index.js",
-      "sha256": "38ed3a3a5d07eb1eb9b3ecc0edfc3cd4905a13eca6801db7555e7fc0088d8bb8",
-      "sizeBytes": 904
+      "sha256": "83d508e3307a9c161e3efc7021fb5498ba51cc54f6df99934f356f3cec653399",
+      "sizeBytes": 1086
     },
     {
       "path": "package-lock.json",
@@ -85,8 +85,8 @@
     },
     {
       "path": "scripts/test-agent-runtime-packed-consumer.mjs",
-      "sha256": "ee06298984f86cc7faf46196d876bb569722399b3ec8be378555fd991ad403cc",
-      "sizeBytes": 6622
+      "sha256": "79bc96fa6fdb0f0997170f255f6be07889430ba4c07186eaad5195e2800c9977",
+      "sizeBytes": 6763
     },
     {
       "path": "scripts/verify-source-manifest.mjs",
@@ -110,8 +110,8 @@
     },
     {
       "path": "src/runtime/agent-session-runtime.js",
-      "sha256": "be12d4aa6c313ec51b8292137c035e8706279439c15c1db943ab8ad135b325f2",
-      "sizeBytes": 2387
+      "sha256": "28b28c3108525d5002829c1870a1e9004b3962e7124f10a0b25dba0bfdcaf2c8",
+      "sizeBytes": 2669
     },
     {
       "path": "src/runtime/agent-session-store.js",
@@ -125,8 +125,8 @@
     },
     {
       "path": "tests/test-agent-session-runtime.mjs",
-      "sha256": "750b5c1055ab146e6281391099d5e3ee76c49bc26e666dda1484af75409a5688",
-      "sizeBytes": 22286
+      "sha256": "706f9feee105741726ca8d14713ffcb0a72109e23ba8a94e5daadd298d94bc71",
+      "sizeBytes": 25932
     }
   ]
 }

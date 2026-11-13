@@ -9,6 +9,11 @@ import {
   AGENT_SESSION_API_METHODS,
   AGENT_SESSION_API_VERSION,
   AGENT_SESSION_DELIVERY_HOOKS,
+  AGENT_SESSION_DELIVERY_PORT_KIND,
+  AGENT_SESSION_DELIVERY_PORT_VERSION,
+  AGENT_SESSION_DELIVERY_PORT_METHODS,
+  createAgentSessionDeliveryPort,
+  assertAgentSessionDeliveryPort,
   AGENT_SESSION_LIFECYCLE_METHODS,
   AGENT_SESSION_RUNTIME_VERSION,
   AGENT_SESSION_WORKFLOW_PORT_METHODS,
@@ -19,7 +24,7 @@ import {
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const eventId = (jobId, type, key = '') => sha256(`${jobId}|${type}|${key}`);
 
-function createHost({ database = new DatabaseSync(':memory:') } = {}) {
+function createHost({ database = new DatabaseSync(':memory:'), deliveryHooksFactory = null } = {}) {
   database.exec(`
     PRAGMA foreign_keys = ON;
     CREATE TABLE jobs(job_id TEXT PRIMARY KEY);
@@ -76,7 +81,10 @@ function createHost({ database = new DatabaseSync(':memory:') } = {}) {
     }
   };
   const workflowPort = createAgentSessionWorkflowPort(workflowImplementation);
-  const runtime = createAgentSessionRuntime({ database, workflowPort });
+  const runtimeReference = { current: null };
+  const deliveryHooks = deliveryHooksFactory ? deliveryHooksFactory(runtimeReference) : null;
+  const runtime = createAgentSessionRuntime({ database, workflowPort, ...(deliveryHooks ? { deliveryHooks } : {}) });
+  runtimeReference.current = runtime;
   return {
     database,
     runtime,
@@ -110,6 +118,22 @@ test('Agent Session ports and runtime APIs are frozen, versioned, and separate f
     assert.equal(AGENT_SESSION_DELIVERY_HOOKS.length, 4);
     assert.equal(AGENT_SESSION_WORKFLOW_PORT_METHODS.length, 8);
   });
+});
+
+test('Agent Session Delivery Port v1 is a frozen four-method facade without transaction or DB controls', () => {
+  const implementation = Object.fromEntries(AGENT_SESSION_DELIVERY_PORT_METHODS.map(method => [method, () => true]));
+  const port = createAgentSessionDeliveryPort(implementation);
+  assert.equal(port.kind, AGENT_SESSION_DELIVERY_PORT_KIND);
+  assert.equal(port.version, AGENT_SESSION_DELIVERY_PORT_VERSION);
+  assert.equal(Object.isFrozen(port), true);
+  assert.deepEqual(Object.keys(port).filter(key => key !== 'kind' && key !== 'version').sort(),
+    [...AGENT_SESSION_DELIVERY_PORT_METHODS].sort());
+  assert.equal(assertAgentSessionDeliveryPort(port), port);
+  assert.throws(() => createAgentSessionDeliveryPort({}), /must provide ackSessionMessage/);
+  assert.throws(() => assertAgentSessionDeliveryPort({
+    ...port, db: {},
+    [Symbol.for('mutable')]: true
+  }), /frozen versioned contract without a database handle/);
 });
 
 test('Agent Session rejects a mismatched SQLite connection before creating owner tables', () => {
@@ -332,6 +356,56 @@ test('Ambiguous transport failure is quarantined and never automatically replaye
     assert.equal(runtime.api.retrySessionMessage(message.message_id, { error: 'do not replay ambiguous send' }).status, 'FAILED');
     assert.equal(calls, 1);
   });
+});
+
+test('host Delivery Port v1 preserves facade re-entry and ACK failure becomes uncertain without replay', async () => {
+  const calls = Object.fromEntries(AGENT_SESSION_DELIVERY_HOOKS.map(method => [method, 0]));
+  let failAckOnce = true;
+  const host = createHost({
+    deliveryHooksFactory(runtimeReference) {
+      return createAgentSessionDeliveryPort(Object.fromEntries(AGENT_SESSION_DELIVERY_HOOKS.map(method => [
+        method,
+        (...args) => {
+          calls[method]++;
+          if (method === 'ackSessionMessage' && failAckOnce) {
+            failAckOnce = false;
+            throw new Error('injected host Agent Session facade ACK failure');
+          }
+          return runtimeReference.current.api[method](...args);
+        }
+      ])));
+    }
+  });
+  try {
+    const { runtime, taskId } = host;
+    const session = runtime.api.createAgentSession(taskId, {
+      sessionKey: 'agent:cto:subagent:host-delivery-facade', role: 'cto'
+    });
+    runtime.api.grantSessionAccess(session.session_id, {
+      accessorRole: 'architect', permission: 'MESSAGE', grantedBy: 'cto'
+    });
+    const message = runtime.api.enqueueSessionMessage(session.session_id, {
+      senderRole: 'cto', recipientRole: 'architect', payload: { command: 'single external send' },
+      dedupeKey: 'host-facade-ack-failure'
+    });
+    let externalEffects = 0;
+    const result = await runtime.api.deliverNextSessionMessage(session.session_id, {
+      recipientRole: 'architect',
+      transport: async () => {
+        externalEffects++;
+        return { status: 'OK', runId: 'host-facade-run', sessionKey: session.openclaw_session_key, result: 'accepted' };
+      },
+      deliveryOptions: { timeoutSeconds: 1 }
+    });
+    assert.equal(externalEffects, 1);
+    assert.equal(result.status, 'FAILED');
+    assert.match(result.last_error, /^DELIVERY_UNCERTAIN:/);
+    assert.equal(runtime.api.getSessionMessage(message.message_id).status, 'FAILED');
+    assert.equal(calls.recordSessionDeliveryReceipt, 1);
+    assert.equal(calls.ackSessionMessage, 1);
+    assert.equal(calls.markSessionMessageDeliveryUncertain, 1);
+    assert.equal(runtime.api.claimSessionMessage(message.message_id, { recipientRole: 'architect' }).claimAcquired, false);
+  } finally { host.close(); }
 });
 
 test('Lifecycle participant locks/updates/terminalizes sessions without leaking into public API', async () => {
