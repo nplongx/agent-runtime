@@ -6,7 +6,7 @@ Report vulnerabilities privately through GitHub Security Advisories for nplongx/
 
 Agent Runtime persists agent session identifiers, role access grants, message payloads, delivery receipts and Workflow event references. Treat its SQLite database and backups as sensitive host application state.
 
-This library is not an identity provider, authorization server, secure agent sandbox, network broker, or security certification.
+This library is not an identity provider, authorization server, secure agent sandbox, network broker, or security certification. Agent Skills ingestion is not a trust or malware-scanning service.
 
 ## Host-owned authority
 
@@ -21,6 +21,12 @@ The host application must:
 - protect backups, monitor uncertainty/quarantine state, and define retention/incident procedures.
 
 A role string, session key, message payload, event, receipt or hash does not authenticate a caller or authorize an operation.
+
+## Agent Skills input boundary
+
+The `./skills` subpath reads local paths selected by its caller and performs HTTPS GET requests only to public GitHub API/raw-content endpoints. It rejects URL credentials, queries, fragments, redirects, unsafe source-path segments and non-GitHub hosts. It applies file-count, per-file, total-byte and directory-depth limits. Skill files are data: the importer never evaluates or executes imported source text.
+
+The importer does not authenticate a GitHub owner/repository, pin mutable refs to immutable commits, inspect skill instructions for prompt injection, or establish that content is safe for a particular role. Host must authorize local source paths, review remote source identity and content, and decide whether the resulting text may be supplied to an agent. `workspaceRoot` is a path anchor, not a sandbox; absolute and parent-relative paths are accepted for compatibility. The local traversal rejects observed symlinks but is not protected against a concurrently hostile filesystem writer. Use a private, stable staging tree and do not treat this library as an isolation boundary.
 
 ## SQLite and ownership boundary
 

@@ -7,7 +7,7 @@ The package was extracted from the Runalith monolith:
 - Repository: https://github.com/nplongx/runalith
 - Branch: integration/runalith-system-20261107
 - Base revision: 29c24cfa2b6ead5704d26cf2746bc384f2938b80
-- Entry point: src/runtime/agent-session-store.js
+- Entry points: src/runtime/agent-session-runtime.js and src/runtime/agent-skills.js
 
 The broader upstream worktree was dirty during the extraction program. The selected Agent Session source files were clean at extraction time and copied into this package; docs/source-manifest.json pins their actual copied bytes. The base Git revision is provenance context, not a substitute for the byte manifest.
 
@@ -18,6 +18,7 @@ The broader upstream worktree was dirty during the extraction program. The selec
 - agent-session-policy.js: role normalization and grant/revoke policy predicates.
 - agent-session-ports.js: versioned Workflow host port contract.
 - agent-session-runtime.js: composition root and same-connection verification.
+- agent-skills.js: bounded local/GitHub skill ingestion, SKILL.md metadata parsing, safe path filtering and content hashing. This source was copied from the clean upstream `src/runtime/workflow/agent-skills.js`; package-only changes add workspace-root injection and GitHub raw-path/tree metadata checks.
 - index.js: public package exports.
 
 The package owns its tests, package/lock files, CI, docs, changelog, security policy and source manifest.
@@ -39,6 +40,8 @@ The public packages supply role-contract validation, COS-AP v1 message validatio
 - Workflow job/task/event schema and authoritative task/event queries remain host-owned.
 - WorkflowStore, WorkflowStatePort, RunalithWorkflowStore, MCP/HTTP handlers and OpenClaw transport adapters are excluded.
 - Agent Runtime owns exactly agent_sessions, session_access, and session_messages.
+- Agent Skills ingestion is a separate package subpath; it has no SQLite schema, Workflow port, or task/approval authority.
+- The importer reads bounded text files only. It does not execute content, authenticate GitHub source identity, or sandbox a concurrently mutable local directory.
 - The three Agent tables reference host jobs/tasks; Workflow event appends/readback use Workflow Port v1.
 - No host database, provider credentials, external sessions, message content, workspace state or deployment settings are copied.
 

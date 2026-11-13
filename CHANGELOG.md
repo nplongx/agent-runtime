@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+- Extract bounded Agent Skill ingestion behind the `@runalith/agent-runtime/skills` public subpath.
+- Add explicit workspace-root injection for deterministic host composition and testing.
+- Reject unsafe relative paths in GitHub skill source directories and malformed tree file metadata.
+- Preserve text-only, bounded, non-executing import behavior; no Workflow or SQLite dependency added to the skill subpath.
+
 ## 0.1.0
 
 - Initial standalone Agent Runtime extraction.

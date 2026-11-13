@@ -2,7 +2,7 @@
 
 ## Purpose
 
-@runalith/agent-runtime owns the durable Agent Session registry, session ACLs, and inter-agent message queue. It composes into a host Workflow runtime through one explicit in-process Workflow port and the host's existing SQLite connection.
+@runalith/agent-runtime owns the durable Agent Session registry, session ACLs, inter-agent message queue, and a separate bounded Agent Skills ingestion subpath. Agent Session state composes into a host Workflow runtime through one explicit in-process Workflow port and the host's existing SQLite connection. Skill ingestion is an independent filesystem/GitHub input adapter and does not use that database or port.
 
 It is not a network transport, identity provider, scheduler, or agent process manager. The host creates/runs external agents and supplies transport callbacks.
 
@@ -24,6 +24,8 @@ flowchart TD
   Runtime --> API[Agent Session API v1]
   Runtime --> Lifecycle[Lifecycle Participant v1]
   Lifecycle --> Host
+  Host --> Skills[Agent Skills ingestion]
+  Skills --> Bundle[Bounded text-only skill bundle]
 ~~~
 
 All four persistence categories (three Agent tables and Workflow events) use one SQLite connection. The port is an in-process contract; it is not an RPC or independent service boundary.
@@ -38,6 +40,7 @@ All four persistence categories (three Agent tables and Workflow events) use one
 | src/runtime/agent-session-store.js | Agent Session schema, registry, ACL, queue, leases, message lifecycle, receipts, recovery and event lineage verification. | SQL writes only to Agent-owned tables; Workflow access uses injected port. |
 | src/runtime/agent-session-api.js | Public API v1, lifecycle participant v1 and internal delivery hook names. | Domain API and Workflow-only participant are separate. |
 | src/runtime/agent-session-policy.js | Role normalization and grant/revoke policy checks. | Uses public Agent Contracts vocabulary; not authentication. |
+| src/runtime/agent-skills.js | Bounded local-directory and public-GitHub skill importer. | Separate `./skills` entrypoint; text-only, size-limited, never executes imported files, no Workflow/SQLite access. |
 
 ## Owned schema
 

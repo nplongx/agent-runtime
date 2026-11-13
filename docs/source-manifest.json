@@ -11,7 +11,7 @@
     "@runalith/cos-ap": "b6f2b51d549ba2f287ebd49d18ce29a212b2270a",
     "@runalith/workflow-contracts": "0419b17985500e3d9b3aa18e07c0b2f6b010070b"
   },
-  "fileCount": 23,
+  "fileCount": 26,
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "dd9d60fba1e1534ced0d2c763285d2859bc59a2bd07ba53457b9ed9cb692afd5",
-      "sizeBytes": 501
+      "sha256": "f88e39db9eae9b79ceb3979c30094f7825cacbcddee2c43893407cf340bf852f",
+      "sizeBytes": 923
     },
     {
       "path": "LICENSE",
@@ -35,33 +35,38 @@
     },
     {
       "path": "README.md",
-      "sha256": "91c5d263d4a0437579f2528f737241896322f6474a7ac4295c98bab6faf28e62",
-      "sizeBytes": 10837
+      "sha256": "c3a8238b898369fe713f949055f9b9b600556411a5f04a8858159c7ceae1afb9",
+      "sizeBytes": 11925
     },
     {
       "path": "SECURITY.md",
-      "sha256": "fef26f3ce52649d584dc48af89be0cd0640ec2cce4db58ebbbf0f7dae9bcd69a",
-      "sizeBytes": 3804
+      "sha256": "a6529973106800be5d6a0bd739826b91f83518daf84f848f2aae84b4ab93b08a",
+      "sizeBytes": 4997
     },
     {
       "path": "docs/README.md",
-      "sha256": "8c733921adf38fb216042e8086e5285c8e0ae6b2ef4b6d6d39c1a4487dce9b1c",
-      "sizeBytes": 750
+      "sha256": "9e5f5828fc8273c1c04b360638d908d350a598be10785c5ce9c07d8793e7b8f9",
+      "sizeBytes": 847
     },
     {
       "path": "docs/architecture.md",
-      "sha256": "80cb1d2b17d9fdade3c0300c58341d23b33b10d95fb47cd327918333b2c96011",
-      "sizeBytes": 5542
+      "sha256": "8ead27be09e3a3e99b964451528ed1d92102b40849e718025f92f5a538ecbc8c",
+      "sizeBytes": 6019
     },
     {
       "path": "docs/integration.md",
-      "sha256": "2c9cf4968a1eaa778316b5da13ed2568b41bb5aaeee2ff0005ecd984854df479",
-      "sizeBytes": 7139
+      "sha256": "f663e33a486a717e07836d3f3b9c17cfa94bac2b6c29254506dedd9794504e8f",
+      "sizeBytes": 8062
+    },
+    {
+      "path": "docs/skills.md",
+      "sha256": "659962c203f431b9e0ba9b762212e0d965380bcb0b7e7ab5f906708138a65f3b",
+      "sizeBytes": 3290
     },
     {
       "path": "docs/source-lineage.md",
-      "sha256": "e9cff60659ec91a95588fabd9029105320992b28a7b88cb4f5d98519d2700d44",
-      "sizeBytes": 3070
+      "sha256": "1e5e5bdd242a06f9e8d13463fbc0642d05cc90b039a6d4fabc58512ed0fbb826",
+      "sizeBytes": 3696
     },
     {
       "path": "docs/terminology.md",
@@ -75,18 +80,18 @@
     },
     {
       "path": "package-lock.json",
-      "sha256": "3b1c660e73fc517f5aef0a10bb6505885b524059afb20e556b840817461999e4",
+      "sha256": "53bf642acdcfc0926ddadbd1fa8fad8bd59c9dea392f6b92eca6d3c4488cd0b4",
       "sizeBytes": 1958
     },
     {
       "path": "package.json",
-      "sha256": "428782809944a75dc6117f1b7bc688e628e0b9ad1494b561fd685bf0224d2943",
-      "sizeBytes": 1602
+      "sha256": "16671e956ebf265ad6205777cdfcbec96685e086ac927f62e111df918f80f6a1",
+      "sizeBytes": 1661
     },
     {
       "path": "scripts/test-agent-runtime-packed-consumer.mjs",
-      "sha256": "79bc96fa6fdb0f0997170f255f6be07889430ba4c07186eaad5195e2800c9977",
-      "sizeBytes": 6763
+      "sha256": "d91312498d78cda9b1f63e4b1d60cb0353573a283b4bf848a506125aebf3fe3a",
+      "sizeBytes": 7556
     },
     {
       "path": "scripts/verify-source-manifest.mjs",
@@ -119,6 +124,11 @@
       "sizeBytes": 105353
     },
     {
+      "path": "src/runtime/agent-skills.js",
+      "sha256": "c1be8c6508e23a206614551c75dff0bbbc937639a977487eb90c74b0570a0807",
+      "sizeBytes": 13615
+    },
+    {
       "path": "tests/test-agent-session-claim-concurrency.mjs",
       "sha256": "d02515666aa681cd57cbdb6e63727aa5e25a6ab12f1703d1c9c7dd2b079cdab6",
       "sizeBytes": 8251
@@ -127,6 +137,11 @@
       "path": "tests/test-agent-session-runtime.mjs",
       "sha256": "706f9feee105741726ca8d14713ffcb0a72109e23ba8a94e5daadd298d94bc71",
       "sizeBytes": 25932
+    },
+    {
+      "path": "tests/test-agent-skills.mjs",
+      "sha256": "2a0b5b9f5f556db5f3ac79a7ea526181b89e477f8117b558156e53c0c065fa1e",
+      "sizeBytes": 8250
     }
   ]
 }

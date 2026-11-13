@@ -1,13 +1,14 @@
 {
   "name": "@runalith/agent-runtime",
-  "version": "0.1.0",
-  "description": "Durable Agent Session registry, access control, and inter-agent message delivery runtime.",
+  "version": "0.2.0",
+  "description": "Agent Session runtime and bounded, non-executing skill ingestion.",
   "license": "MIT",
   "type": "module",
   "main": "./index.js",
   "exports": {
     ".": "./index.js",
-    "./session-api": "./src/runtime/agent-session-api.js"
+    "./session-api": "./src/runtime/agent-session-api.js",
+    "./skills": "./src/runtime/agent-skills.js"
   },
   "files": [
     "index.js",
@@ -37,5 +38,5 @@
   },
   "bugs": { "url": "https://github.com/nplongx/agent-runtime/issues" },
   "homepage": "https://github.com/nplongx/agent-runtime#readme",
-  "keywords": ["agent-runtime", "agent-session", "sqlite", "message-delivery", "session-acl"]
+  "keywords": ["agent-runtime", "agent-session", "agent-skills", "skill-importer", "sqlite", "message-delivery", "session-acl"]
 }

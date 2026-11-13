@@ -3,11 +3,11 @@
 [![CI](https://github.com/nplongx/agent-runtime/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nplongx/agent-runtime/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**@runalith/agent-runtime** is a Node.js ESM library for durable Agent Session state: session lifecycle, role-based access grants, and an inter-agent message queue with delivery leases, receipts, retries, and uncertain-outcome quarantine.
+**@runalith/agent-runtime** is a Node.js ESM library for durable Agent Session state and bounded Agent Skills ingestion. Session APIs provide lifecycle, role-based access grants, and an inter-agent message queue with delivery leases, receipts, retries, and uncertain-outcome quarantine. A separate `./skills` subpath imports bounded text-only skill bundles from local directories or public GitHub repositories.
 
 This is a host-composed persistence/runtime component, not an agent scheduler, identity provider, OpenClaw transport, MCP server, or independent database service. Workflow host remains authority for task identity, role/task state, event history, authentication, and external delivery.
 
-> **Status:** 0.1.0, GitHub-first source package. Not published to npm. Public API and schema compatibility remain pre-1.0.
+> **Status:** 0.2.0, GitHub-first source package. Not published to npm. Public API and schema compatibility remain pre-1.0.
 
 ## Scope
 
@@ -19,10 +19,11 @@ This is a host-composed persistence/runtime component, not an agent scheduler, i
 - Durable transport-start intent, correlated success receipts, ACK validation, and restart recovery.
 - Explicit DELIVERY_UNCERTAIN quarantine after possible external side effect; ambiguous messages are not automatically replayed.
 - Separate public Agent Session API v1, Workflow lifecycle participant v1, and optional host Delivery Port v1 that preserves compatibility/fault-injection hooks.
+- Separate `@runalith/agent-runtime/skills` entrypoint for bounded local/GitHub text-file ingestion, SKILL.md frontmatter validation, and content hashing.
 
 ## Non-goals
 
-This package does not authenticate users or agents, create/approve Workflow tasks, define business roles, run agents, create OpenClaw sessions, make network calls, provide a message broker, or prove remote work completed. Host supplies transport at delivery time.
+This package does not authenticate users or agents, create/approve Workflow tasks, define business roles, run agents, create OpenClaw sessions, provide a message broker, or prove remote work completed. The `./skills` subpath makes HTTPS requests only to public GitHub APIs/raw content and reads explicitly supplied local skill paths; imported files are returned as text and never executed. Host remains responsible for deciding whether imported skill content is trusted or may be supplied to an agent.
 
 ## Requirements and dependencies
 
@@ -32,6 +33,18 @@ This package does not authenticate users or agents, create/approve Workflow task
 - Three pinned public GitHub contracts: @runalith/agent-contracts, @runalith/cos-ap, and @runalith/workflow-contracts.
 
 Dependencies are pinned to immutable GitHub commit tarballs in package.json and package-lock.json. No SSH key required. No other third-party runtime dependency.
+
+## Agent Skills subpath
+
+~~~js
+import { loadAgentSkills, MAX_SKILLS_PER_ROLE } from '@runalith/agent-runtime/skills';
+
+const skills = await loadAgentSkills(['skills/code-review', 'https://github.com/example-org/skills/tree/main/research'], {
+  workspaceRoot: process.env.WORKFLOW_WORKSPACE,
+});
+~~~
+
+See [Agent Skills ingestion](docs/skills.md) for source restrictions, size limits, return shape, and security assumptions. This subpath is independent of Agent Session persistence and does not import or initialize SQLite.
 
 ## Install
 

@@ -41,6 +41,8 @@ const { api, lifecycleParticipant } = runtime;
 
 Each supplied method must be a function. Runtime wraps it in a frozen, versioned allowlist and checks exact SQLite connection. The host adapter must not expose db, database, prepare, exec, or a generic transaction callback.
 
+Agent Skills is a separate non-persistent subpath. It does not participate in the Workflow/Agent Session transaction unit and does not grant approval, execution, or filesystem-write authority.
+
 ## Workflow Port v1 methods
 
 | Method | Contract |
@@ -105,6 +107,12 @@ A valid success receipt must return:
 - any result/payload/raw response host chooses to persist
 
 Transport callback does not run inside a SQLite writer transaction.
+
+## Agent Skills ingestion
+
+`loadAgentSkills()` is imported from `@runalith/agent-runtime/skills`. Supply a workspace root for deterministic relative-path resolution and a fetch implementation for tests. `workspaceRoot` anchors paths; it does not sandbox absolute or parent-relative paths. The caller must authorize source paths before calling the importer.
+
+The importer returns detached text and content hashes only. It does not execute imported JavaScript/shell/Python, establish repository trust, or authorize a custom role to use the skill. The Workflow host owns custom-role persistence, role permissions, approval, and any decision to expose the returned skill bundle to an agent. See [Agent Skills ingestion](skills.md).
 
 The host should call reconcileSessionDelivery() after restart/worker recovery. Runtime may safely requeue only expired delivery attempts with no durable transport-start event. Once that event exists, missing success receipt means unknown external outcome and the message is quarantined. Do not add a force-retry path that bypasses this rule.
 

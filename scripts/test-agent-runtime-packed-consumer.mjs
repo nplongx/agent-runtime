@@ -37,7 +37,7 @@ try {
   const packed = JSON.parse(run('npm', ['pack', '--json', '--pack-destination', temporaryRoot], ROOT, 'npm pack'));
   assert.equal(packed.length, 1);
   assert.equal(packed[0].name, '@runalith/agent-runtime');
-  assert.equal(packed[0].version, '0.1.0');
+  assert.equal(packed[0].version, '0.2.0');
   const tarball = path.join(temporaryRoot, packed[0].filename);
   assert.ok(fs.statSync(tarball).size > 10000);
   run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--prefix', consumerRoot, tarball],
@@ -51,6 +51,7 @@ try {
     "import path from 'node:path';",
     "import { DatabaseSync } from 'node:sqlite';",
     "import * as api from '@runalith/agent-runtime';",
+    "import { loadAgentSkills } from '@runalith/agent-runtime/skills';",
     "assert.equal(api.AGENT_SESSION_RUNTIME_VERSION, 1);",
     "assert.equal(api.AGENT_SESSION_API_VERSION, 1);",
     "assert.equal(api.AGENT_SESSION_WORKFLOW_PORT_VERSION, 1);",
@@ -58,6 +59,15 @@ try {
     "assert.equal(typeof api.createAgentSessionDeliveryPort, 'function');",
     "assert.equal(typeof api.createAgentSessionRuntime, 'function');",
     "assert.equal(typeof api.createAgentSessionWorkflowPort, 'function');",
+    "const skillRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-runtime-skill-consumer-'));",
+    "const skillDirectory = path.join(skillRoot, 'consumer-skill');",
+    "fs.mkdirSync(skillDirectory, { recursive: true });",
+    "fs.writeFileSync(path.join(skillDirectory, 'SKILL.md'), '---\\nname: consumer-skill\\ndescription: Packed skill consumer smoke.\\n---\\n\\nKeep imported content inert.\\n');",
+    "const bundles = await loadAgentSkills(['consumer-skill'], { workspaceRoot: skillRoot });",
+    "assert.equal(bundles.length, 1);",
+    "assert.equal(bundles[0].name, 'consumer-skill');",
+    "assert.match(bundles[0].sha256, /^[a-f0-9]{64}$/);",
+    "fs.rmSync(skillRoot, { recursive: true, force: true });",
     "const root = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-runtime-consumer-smoke-'));",
     "const databasePath = path.join(root, 'workflow.db');",
     "const database = new DatabaseSync(databasePath);",
