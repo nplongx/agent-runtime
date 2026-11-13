@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "sourceRepository": "https://github.com/nplongx/runalith",
+  "sourceBranch": "integration/runalith-system-20261107",
+  "sourceBaseRevision": "29c24cfa2b6ead5704d26cf2746bc384f2938b80",
+  "sourceSelectedFilesWereClean": true,
+  "extractionEntryPoint": "src/runtime/agent-session-runtime.js",
+  "integrationModel": "host-composed Agent Session API; exact shared Workflow SQLite connection; not an independent service or datastore",
+  "pinnedExternalDependencies": {
+    "@runalith/agent-contracts": "7253657b5c3e2815cd21afed08d1e7027510d866",
+    "@runalith/cos-ap": "b6f2b51d549ba2f287ebd49d18ce29a212b2270a",
+    "@runalith/workflow-contracts": "0419b17985500e3d9b3aa18e07c0b2f6b010070b"
+  },
+  "fileCount": 23,
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "5d0ff589d4ed34b453b203b900817a48007c61b3c2a75efe195f2f25f370f92c",
+      "sizeBytes": 483
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "5612d77237e802533d338bd0e9973095d4a81a4376f55e172a20024021cc0784",
+      "sizeBytes": 40
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "831d6eb649d4e55b3daf9608fd0d2bf8326fa4afada1f7409e14221f9e5df8ca",
+      "sizeBytes": 378
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685",
+      "sizeBytes": 1056
+    },
+    {
+      "path": "README.md",
+      "sha256": "8d0e98cf00d9617a7a1a1cb1550d921d4b0ff3ac8138ad913f9dfdc8a0f204e9",
+      "sizeBytes": 9929
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "fef26f3ce52649d584dc48af89be0cd0640ec2cce4db58ebbbf0f7dae9bcd69a",
+      "sizeBytes": 3804
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "4f27ce7073d0d3d467d4045dd16bb5e21d6b893a79199c4e07a5d585a869d8fd",
+      "sizeBytes": 736
+    },
+    {
+      "path": "docs/architecture.md",
+      "sha256": "730bafc58527d9fb27ab84a20675bcde7d353eeeb92252512e2a05371dc1aa4b",
+      "sizeBytes": 5331
+    },
+    {
+      "path": "docs/integration.md",
+      "sha256": "82cbeb652f63214d45be8e3bdca2c0bb29b9f3eeda3d33a8a0312117f8037b15",
+      "sizeBytes": 5683
+    },
+    {
+      "path": "docs/source-lineage.md",
+      "sha256": "e9cff60659ec91a95588fabd9029105320992b28a7b88cb4f5d98519d2700d44",
+      "sizeBytes": 3070
+    },
+    {
+      "path": "docs/terminology.md",
+      "sha256": "f250294a9720bc8e476106ce2f5b1e0de8095e76572daa222eab98159cea8241",
+      "sizeBytes": 2338
+    },
+    {
+      "path": "index.js",
+      "sha256": "38ed3a3a5d07eb1eb9b3ecc0edfc3cd4905a13eca6801db7555e7fc0088d8bb8",
+      "sizeBytes": 904
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "3b1c660e73fc517f5aef0a10bb6505885b524059afb20e556b840817461999e4",
+      "sizeBytes": 1958
+    },
+    {
+      "path": "package.json",
+      "sha256": "428782809944a75dc6117f1b7bc688e628e0b9ad1494b561fd685bf0224d2943",
+      "sizeBytes": 1602
+    },
+    {
+      "path": "scripts/test-agent-runtime-packed-consumer.mjs",
+      "sha256": "ee06298984f86cc7faf46196d876bb569722399b3ec8be378555fd991ad403cc",
+      "sizeBytes": 6622
+    },
+    {
+      "path": "scripts/verify-source-manifest.mjs",
+      "sha256": "bdc540d4770a85aee5fe353297debc8863cf8444346ae806c3910f8d014ec42c",
+      "sizeBytes": 2716
+    },
+    {
+      "path": "src/runtime/agent-session-api.js",
+      "sha256": "e314ba38dfabb3f05d8514eb0c9c8fd665a3a3b8f9ba0631e75668268236d63e",
+      "sizeBytes": 2898
+    },
+    {
+      "path": "src/runtime/agent-session-policy.js",
+      "sha256": "7d104ae6885b40aaae1ea8e578d86f30a9e8c26c30754754f5f28028d6a27a5e",
+      "sizeBytes": 1544
+    },
+    {
+      "path": "src/runtime/agent-session-ports.js",
+      "sha256": "4c1cb77f2552b097954a268f5249689ce34d4ba7abfdf9bb0d0b1be0ae7d9799",
+      "sizeBytes": 3035
+    },
+    {
+      "path": "src/runtime/agent-session-runtime.js",
+      "sha256": "be12d4aa6c313ec51b8292137c035e8706279439c15c1db943ab8ad135b325f2",
+      "sizeBytes": 2387
+    },
+    {
+      "path": "src/runtime/agent-session-store.js",
+      "sha256": "23cfa3e3a49551bf3b3a6952514f65e656fc8a1aa0ead346879d0354af1b4d1a",
+      "sizeBytes": 105353
+    },
+    {
+      "path": "tests/test-agent-session-claim-concurrency.mjs",
+      "sha256": "d02515666aa681cd57cbdb6e63727aa5e25a6ab12f1703d1c9c7dd2b079cdab6",
+      "sizeBytes": 8251
+    },
+    {
+      "path": "tests/test-agent-session-runtime.mjs",
+      "sha256": "750b5c1055ab146e6281391099d5e3ee76c49bc26e666dda1484af75409a5688",
+      "sizeBytes": 22286
+    }
+  ]
+}

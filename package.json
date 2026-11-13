@@ -1,0 +1,41 @@
+{
+  "name": "@runalith/agent-runtime",
+  "version": "0.1.0",
+  "description": "Durable Agent Session registry, access control, and inter-agent message delivery runtime.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./session-api": "./src/runtime/agent-session-api.js"
+  },
+  "files": [
+    "index.js",
+    "src/",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "docs/"
+  ],
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "test": "node --test tests/*.mjs",
+    "check": "npm run check:manifest && node --check index.js && npm test",
+    "check:manifest": "node scripts/verify-source-manifest.mjs",
+    "pack:check": "npm pack --dry-run",
+    "test:packed-consumer": "node scripts/test-agent-runtime-packed-consumer.mjs"
+  },
+  "dependencies": {
+    "@runalith/agent-contracts": "https://github.com/nplongx/runalith-agent-contracts/archive/7253657b5c3e2815cd21afed08d1e7027510d866.tar.gz",
+    "@runalith/cos-ap": "https://github.com/nplongx/runalith-cos-ap/archive/b6f2b51d549ba2f287ebd49d18ce29a212b2270a.tar.gz",
+    "@runalith/workflow-contracts": "https://github.com/nplongx/runalith-workflow-contracts/archive/0419b17985500e3d9b3aa18e07c0b2f6b010070b.tar.gz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nplongx/agent-runtime.git"
+  },
+  "bugs": { "url": "https://github.com/nplongx/agent-runtime/issues" },
+  "homepage": "https://github.com/nplongx/agent-runtime#readme",
+  "keywords": ["agent-runtime", "agent-session", "sqlite", "message-delivery", "session-acl"]
+}
