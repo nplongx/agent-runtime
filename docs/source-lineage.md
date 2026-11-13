@@ -7,7 +7,7 @@ The package was extracted from the Runalith monolith:
 - Repository: https://github.com/nplongx/runalith
 - Branch: integration/runalith-system-20261107
 - Base revision: 29c24cfa2b6ead5704d26cf2746bc384f2938b80
-- Entry points: src/runtime/agent-session-runtime.js and src/runtime/agent-skills.js
+- Entry points: src/runtime/agent-session-runtime.js, src/runtime/agent-skills.js and src/runtime/specialist-role-guidance.js
 
 The broader upstream worktree was dirty during the extraction program. The selected Agent Session source files were clean at extraction time and copied into this package; docs/source-manifest.json pins their actual copied bytes. The base Git revision is provenance context, not a substitute for the byte manifest.
 
@@ -19,6 +19,7 @@ The broader upstream worktree was dirty during the extraction program. The selec
 - agent-session-ports.js: versioned Workflow host port contract.
 - agent-session-runtime.js: composition root and same-connection verification.
 - agent-skills.js: bounded local/GitHub skill ingestion, SKILL.md metadata parsing, safe path filtering and content hashing. This source was copied from the clean upstream `src/runtime/workflow/agent-skills.js`; package-only changes add workspace-root injection and GitHub raw-path/tree metadata checks.
+- specialist-role-guidance.js: static built-in specialist prompt strings copied from `src/runtime/workflow/specialist-role-guidance.js`; exposed as a separate subpath without Workflow or tool execution dependencies.
 - index.js: public package exports.
 
 The package owns its tests, package/lock files, CI, docs, changelog, security policy and source manifest.
@@ -42,6 +43,7 @@ The public packages supply role-contract validation, COS-AP v1 message validatio
 - Agent Runtime owns exactly agent_sessions, session_access, and session_messages.
 - Agent Skills ingestion is a separate package subpath; it has no SQLite schema, Workflow port, or task/approval authority.
 - The importer reads bounded text files only. It does not execute content, authenticate GitHub source identity, or sandbox a concurrently mutable local directory.
+- Specialist guidance is static prompt data only. Workflow owns role selection, task binding, tool availability, approval, dispatch and task lifecycle. The System Workflow Coordinator remains host-owned because its prompt depends on Workflow-specific coordinator/write/approval tools.
 - The three Agent tables reference host jobs/tasks; Workflow event appends/readback use Workflow Port v1.
 - No host database, provider credentials, external sessions, message content, workspace state or deployment settings are copied.
 

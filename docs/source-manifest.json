@@ -11,7 +11,7 @@
     "@runalith/cos-ap": "b6f2b51d549ba2f287ebd49d18ce29a212b2270a",
     "@runalith/workflow-contracts": "0419b17985500e3d9b3aa18e07c0b2f6b010070b"
   },
-  "fileCount": 26,
+  "fileCount": 29,
   "files": [
     {
       "path": ".github/workflows/ci.yml",
@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "f88e39db9eae9b79ceb3979c30094f7825cacbcddee2c43893407cf340bf852f",
-      "sizeBytes": 923
+      "sha256": "52047c6ca0728757f0f75dfaf16f41aa3f3e427f694ec86be94c06c0eedf23ae",
+      "sizeBytes": 1162
     },
     {
       "path": "LICENSE",
@@ -35,8 +35,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "c3a8238b898369fe713f949055f9b9b600556411a5f04a8858159c7ceae1afb9",
-      "sizeBytes": 11925
+      "sha256": "b052cdc8aae0eaa517f4091ea828b63c063d9ea47783eba2b119a12bb9b4c7a3",
+      "sizeBytes": 12644
     },
     {
       "path": "SECURITY.md",
@@ -45,13 +45,13 @@
     },
     {
       "path": "docs/README.md",
-      "sha256": "9e5f5828fc8273c1c04b360638d908d350a598be10785c5ce9c07d8793e7b8f9",
-      "sizeBytes": 847
+      "sha256": "daba299927fea8250d139c36f17a14fbcd6c4c295a7e0152b0fd15446eb4fb2c",
+      "sizeBytes": 943
     },
     {
       "path": "docs/architecture.md",
-      "sha256": "8ead27be09e3a3e99b964451528ed1d92102b40849e718025f92f5a538ecbc8c",
-      "sizeBytes": 6019
+      "sha256": "ef1e41423b352ac81b22c6b03352eecf3d011121e675055aed45c66116322bb0",
+      "sizeBytes": 6325
     },
     {
       "path": "docs/integration.md",
@@ -65,8 +65,13 @@
     },
     {
       "path": "docs/source-lineage.md",
-      "sha256": "1e5e5bdd242a06f9e8d13463fbc0642d05cc90b039a6d4fabc58512ed0fbb826",
-      "sizeBytes": 3696
+      "sha256": "a95e193f82bf3297d38da0bad42d3b655ac70c2828b6bd27b2d1a9ea16606333",
+      "sizeBytes": 4238
+    },
+    {
+      "path": "docs/specialist-guidance.md",
+      "sha256": "2459dc9a30463bfbff5fbc98fa24c453254c5b747028c900c4f905c32c6848b5",
+      "sizeBytes": 1678
     },
     {
       "path": "docs/terminology.md",
@@ -80,18 +85,18 @@
     },
     {
       "path": "package-lock.json",
-      "sha256": "53bf642acdcfc0926ddadbd1fa8fad8bd59c9dea392f6b92eca6d3c4488cd0b4",
+      "sha256": "ae3ff221437004a6bd0d843ad0f370da4372c9ddcbdcb9a0d58711129d9d6183",
       "sizeBytes": 1958
     },
     {
       "path": "package.json",
-      "sha256": "16671e956ebf265ad6205777cdfcbec96685e086ac927f62e111df918f80f6a1",
-      "sizeBytes": 1661
+      "sha256": "a33519fdc92f269c08d0cefd357ba44c6ee73f37cde6cf781e154e718b2b1658",
+      "sizeBytes": 1775
     },
     {
       "path": "scripts/test-agent-runtime-packed-consumer.mjs",
-      "sha256": "d91312498d78cda9b1f63e4b1d60cb0353573a283b4bf848a506125aebf3fe3a",
-      "sizeBytes": 7556
+      "sha256": "29fc4b7eb824f22a9473c637819783cb877c7c127f4df16379ef85bd4f806285",
+      "sizeBytes": 7906
     },
     {
       "path": "scripts/verify-source-manifest.mjs",
@@ -129,6 +134,11 @@
       "sizeBytes": 13615
     },
     {
+      "path": "src/runtime/specialist-role-guidance.js",
+      "sha256": "669556f8083fcb9c7e5c508d2392c471755a2b24be2e40eb2b228c271558fc7b",
+      "sizeBytes": 9173
+    },
+    {
       "path": "tests/test-agent-session-claim-concurrency.mjs",
       "sha256": "d02515666aa681cd57cbdb6e63727aa5e25a6ab12f1703d1c9c7dd2b079cdab6",
       "sizeBytes": 8251
@@ -142,6 +152,11 @@
       "path": "tests/test-agent-skills.mjs",
       "sha256": "2a0b5b9f5f556db5f3ac79a7ea526181b89e477f8117b558156e53c0c065fa1e",
       "sizeBytes": 8250
+    },
+    {
+      "path": "tests/test-specialist-guidance.mjs",
+      "sha256": "29f3aa7f989946ebc5772ba25bd370e267965579e19773b19b8d63b6cddd1dd8",
+      "sizeBytes": 1336
     }
   ]
 }

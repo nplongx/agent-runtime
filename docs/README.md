@@ -5,6 +5,7 @@
 | Responsibilities, module map, data flow and lifecycle invariants | [Architecture](architecture.md) |
 | Workflow and Delivery ports, database prerequisites, host integration and recovery | [Integration](integration.md) |
 | Bounded local/GitHub skill ingestion and untrusted-text handling | [Agent Skills](skills.md) |
+| Immutable built-in specialist role guidance | [Specialist guidance](specialist-guidance.md) |
 | Session, access, message, lease, receipt and outcome terms | [Terminology](terminology.md) |
 | Upstream snapshot, copied source, exclusions and pinned dependencies | [Source lineage](source-lineage.md) |
 | Security assumptions and host-owned authority | [Security policy](../SECURITY.md) |

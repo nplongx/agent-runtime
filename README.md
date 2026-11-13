@@ -3,11 +3,11 @@
 [![CI](https://github.com/nplongx/agent-runtime/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nplongx/agent-runtime/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**@runalith/agent-runtime** is a Node.js ESM library for durable Agent Session state and bounded Agent Skills ingestion. Session APIs provide lifecycle, role-based access grants, and an inter-agent message queue with delivery leases, receipts, retries, and uncertain-outcome quarantine. A separate `./skills` subpath imports bounded text-only skill bundles from local directories or public GitHub repositories.
+**@runalith/agent-runtime** is a Node.js ESM library for durable Agent Session state, bounded Agent Skills ingestion, and immutable specialist role guidance. Session APIs provide lifecycle, role-based access grants, and an inter-agent message queue with delivery leases, receipts, retries, and uncertain-outcome quarantine. Separate `./skills` and `./specialist-guidance` subpaths provide bounded text-only skill bundles and static built-in role prompt data.
 
 This is a host-composed persistence/runtime component, not an agent scheduler, identity provider, OpenClaw transport, MCP server, or independent database service. Workflow host remains authority for task identity, role/task state, event history, authentication, and external delivery.
 
-> **Status:** 0.2.0, GitHub-first source package. Not published to npm. Public API and schema compatibility remain pre-1.0.
+> **Status:** 0.3.0, GitHub-first source package. Not published to npm. Public API and schema compatibility remain pre-1.0.
 
 ## Scope
 
@@ -20,6 +20,7 @@ This is a host-composed persistence/runtime component, not an agent scheduler, i
 - Explicit DELIVERY_UNCERTAIN quarantine after possible external side effect; ambiguous messages are not automatically replayed.
 - Separate public Agent Session API v1, Workflow lifecycle participant v1, and optional host Delivery Port v1 that preserves compatibility/fault-injection hooks.
 - Separate `@runalith/agent-runtime/skills` entrypoint for bounded local/GitHub text-file ingestion, SKILL.md frontmatter validation, and content hashing.
+- Separate `@runalith/agent-runtime/specialist-guidance` entrypoint for immutable built-in specialist role prompt strings; it does not coordinate Workflow state.
 
 ## Non-goals
 
@@ -45,6 +46,17 @@ const skills = await loadAgentSkills(['skills/code-review', 'https://github.com/
 ~~~
 
 See [Agent Skills ingestion](docs/skills.md) for source restrictions, size limits, return shape, and security assumptions. This subpath is independent of Agent Session persistence and does not import or initialize SQLite.
+
+## Specialist guidance subpath
+
+~~~js
+import { getSpecialistRoleGuidance, SPECIALIST_GUIDANCE_ROLES } from '@runalith/agent-runtime/specialist-guidance';
+
+const roles = SPECIALIST_GUIDANCE_ROLES;
+const engineerGuidance = getSpecialistRoleGuidance('engineer');
+~~~
+
+See [Specialist guidance](docs/specialist-guidance.md). This subpath returns immutable built-in role guidance strings only. The host still owns role assignment, Workflow task contracts, tool registration, approvals, and coordinator execution.
 
 ## Install
 

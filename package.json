@@ -1,14 +1,15 @@
 {
   "name": "@runalith/agent-runtime",
-  "version": "0.2.0",
-  "description": "Agent Session runtime and bounded, non-executing skill ingestion.",
+  "version": "0.3.0",
+  "description": "Agent Session runtime, bounded skill ingestion, and immutable specialist guidance.",
   "license": "MIT",
   "type": "module",
   "main": "./index.js",
   "exports": {
     ".": "./index.js",
     "./session-api": "./src/runtime/agent-session-api.js",
-    "./skills": "./src/runtime/agent-skills.js"
+    "./skills": "./src/runtime/agent-skills.js",
+    "./specialist-guidance": "./src/runtime/specialist-role-guidance.js"
   },
   "files": [
     "index.js",
@@ -38,5 +39,5 @@
   },
   "bugs": { "url": "https://github.com/nplongx/agent-runtime/issues" },
   "homepage": "https://github.com/nplongx/agent-runtime#readme",
-  "keywords": ["agent-runtime", "agent-session", "agent-skills", "skill-importer", "sqlite", "message-delivery", "session-acl"]
+  "keywords": ["agent-runtime", "agent-session", "agent-skills", "specialist-guidance", "skill-importer", "sqlite", "message-delivery", "session-acl"]
 }

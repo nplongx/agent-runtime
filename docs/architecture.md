@@ -26,6 +26,8 @@ flowchart TD
   Lifecycle --> Host
   Host --> Skills[Agent Skills ingestion]
   Skills --> Bundle[Bounded text-only skill bundle]
+  Host --> Guidance[Specialist role guidance]
+  Guidance --> Prompts[Immutable role prompt data]
 ~~~
 
 All four persistence categories (three Agent tables and Workflow events) use one SQLite connection. The port is an in-process contract; it is not an RPC or independent service boundary.
@@ -41,6 +43,7 @@ All four persistence categories (three Agent tables and Workflow events) use one
 | src/runtime/agent-session-api.js | Public API v1, lifecycle participant v1 and internal delivery hook names. | Domain API and Workflow-only participant are separate. |
 | src/runtime/agent-session-policy.js | Role normalization and grant/revoke policy checks. | Uses public Agent Contracts vocabulary; not authentication. |
 | src/runtime/agent-skills.js | Bounded local-directory and public-GitHub skill importer. | Separate `./skills` entrypoint; text-only, size-limited, never executes imported files, no Workflow/SQLite access. |
+| src/runtime/specialist-role-guidance.js | Immutable built-in specialist role prompt strings. | Separate `./specialist-guidance` entrypoint; static read-only data, no Workflow/SQLite or execution behavior. |
 
 ## Owned schema
 

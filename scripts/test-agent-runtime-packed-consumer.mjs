@@ -37,7 +37,7 @@ try {
   const packed = JSON.parse(run('npm', ['pack', '--json', '--pack-destination', temporaryRoot], ROOT, 'npm pack'));
   assert.equal(packed.length, 1);
   assert.equal(packed[0].name, '@runalith/agent-runtime');
-  assert.equal(packed[0].version, '0.2.0');
+  assert.equal(packed[0].version, '0.3.0');
   const tarball = path.join(temporaryRoot, packed[0].filename);
   assert.ok(fs.statSync(tarball).size > 10000);
   run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--prefix', consumerRoot, tarball],
@@ -52,6 +52,7 @@ try {
     "import { DatabaseSync } from 'node:sqlite';",
     "import * as api from '@runalith/agent-runtime';",
     "import { loadAgentSkills } from '@runalith/agent-runtime/skills';",
+    "import { getSpecialistRoleGuidance, SPECIALIST_GUIDANCE_ROLES } from '@runalith/agent-runtime/specialist-guidance';",
     "assert.equal(api.AGENT_SESSION_RUNTIME_VERSION, 1);",
     "assert.equal(api.AGENT_SESSION_API_VERSION, 1);",
     "assert.equal(api.AGENT_SESSION_WORKFLOW_PORT_VERSION, 1);",
@@ -67,6 +68,9 @@ try {
     "assert.equal(bundles.length, 1);",
     "assert.equal(bundles[0].name, 'consumer-skill');",
     "assert.match(bundles[0].sha256, /^[a-f0-9]{64}$/);",
+    "assert.equal(SPECIALIST_GUIDANCE_ROLES.length, 9);",
+    "assert.match(getSpecialistRoleGuidance('engineer'), /Stop\\/escalate:/);",
+    "assert.throws(() => getSpecialistRoleGuidance('cto'), /unknown specialist role/);",
     "fs.rmSync(skillRoot, { recursive: true, force: true });",
     "const root = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-runtime-consumer-smoke-'));",
     "const databasePath = path.join(root, 'workflow.db');",

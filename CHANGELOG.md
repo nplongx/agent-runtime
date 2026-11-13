@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- Extract immutable built-in specialist role guidance behind `@runalith/agent-runtime/specialist-guidance`.
+- Keep guidance as static data; no Workflow database, dispatch, approval, scheduler, or process behavior is introduced.
+
 ## 0.2.0
 
 - Extract bounded Agent Skill ingestion behind the `@runalith/agent-runtime/skills` public subpath.
